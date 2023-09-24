@@ -53,6 +53,3 @@ def findProduct(productName):
     soup = BeautifulSoup(res.content, 'html.parser')
     rawSearchResult = soup.find('ul',{'id':'SharedMessage_ContentPlaceHolder1_divThumbnailView'}).find('li')
     return productParser(BASE_URL+rawSearchResult.find('a').get('href') if productName in rawSearchResult.find('a').text else None)
-
-
-productParser('https://meghdadit.com/product/19/kingston-kvr-ddr2-2gb-800mhz-cl6-dimm-16-chip-desktop-ram/')
