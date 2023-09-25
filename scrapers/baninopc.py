@@ -38,4 +38,3 @@ def findProduct(productName):
     else:
         return 'Not found in Baninopc'
     
-findProduct('گوشی موبایل سامسونگ مدل GALAXY A34 ظرفیت 128 گیگابایت و رم 8 گیگابایت')
