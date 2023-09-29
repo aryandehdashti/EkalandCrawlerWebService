@@ -34,7 +34,7 @@ def findProduct(productName):
     try:
         searchResult = str(requests.get(SEARCH_URL + productName).json()["data"]["products"][0]["id"])
         product = requests.get(PRODUCT_URL + searchResult + "/").json()["data"]["product"]
-        return productParser(product if productName in product["title_fa"] else None)
+        return productParser(product if product["title_fa"] in productName else None)
 
     except:
         return 'Not Found from Digikala'

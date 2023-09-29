@@ -10,6 +10,24 @@ def productParser(productUrl):
         respond = requests.get(productUrl)
         soup = BeautifulSoup(respond.content, 'html.parser')
         rawProduct = soup.find('div',{'class':'rtl summary-left-pane'})
+        products = []
+        for product in json.loads(rawProduct.find('input',{'id':'hfdPrices'}).get('value')):
+            productName = rawProduct.find('span', {"id":"SharedMessage_ContentPlaceHolder1_lblItemTitle"}).text
+            color = product["ProductColorTitle"]
+            status = "موجود"
+            warranty = product["WarrantyTitle"]
+            price = product["FormattedPrice"]
+            supplier = 'meghdadit'
+            url = productUrl
+            products.append({
+                "title": productName,
+                "color": color,
+                "status": status,
+                "warranty":warranty,
+                "price":price,
+                "supplier":supplier,
+                "url": url})
+        return products
     except: pass
     if productUrl == None :
         productName = 'ناموحود'
@@ -28,28 +46,10 @@ def productParser(productUrl):
         "supplier":supplier,
         "url": url}
 
-    else:
-        products = []
-        for product in json.loads(rawProduct.find('input',{'id':'hfdPrices'}).get('value')):
-            productName = rawProduct.find('span', {"id":"SharedMessage_ContentPlaceHolder1_lblItemTitle"}).text
-            color = product["ProductColorTitle"]
-            status = "موجود"
-            warranty = product["WarrantyTitle"]
-            price = product["FormattedPrice"]
-            supplier = 'meghdadit'
-            url = productUrl
-            products.append({
-                "title": productName,
-                "color": color,
-                "status": status,
-                "warranty":warranty,
-                "price":price,
-                "supplier":supplier,
-                "url": url})
-    return products
-
 def findProduct(productName):
-    res = requests.get(SEARCH_URL + productName)
-    soup = BeautifulSoup(res.content, 'html.parser')
-    rawSearchResult = soup.find('ul',{'id':'SharedMessage_ContentPlaceHolder1_divThumbnailView'}).find('li')
-    return productParser(BASE_URL+rawSearchResult.find('a').get('href') if productName in rawSearchResult.find('a').text else None)
+    try:
+        res = requests.get(SEARCH_URL + productName)
+        soup = BeautifulSoup(res.content, 'html.parser')
+        rawSearchResult = soup.find('ul',{'id':'SharedMessage_ContentPlaceHolder1_divThumbnailView'}).find('li')
+        return productParser(BASE_URL+rawSearchResult.find('a').get('href') if rawSearchResult is not None and rawSearchResult.find('a').text in productName else None)
+    except: pass

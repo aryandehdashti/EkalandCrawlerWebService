@@ -39,9 +39,12 @@ def productParser(productUrl):
              return 'Not Found in Exo'
 
 def findProduct(productName):
-    res = requests.get(SEARCH_URL + productName)
-    soup = BeautifulSoup(res.content, 'html.parser')
-    rawSearchResult = soup.find('div',{'class': 'grid-product'}) if len(soup.findAll('div',{'class': 'grid-product'})) > 0 else None
-    return productParser(rawSearchResult.find('a').get('href'))
+    try:
+        res = requests.get(SEARCH_URL + productName)
+        soup = BeautifulSoup(res.content, 'html.parser')
+        rawSearchResult = soup.find('div',{'class': 'grid-product'}).find('a').get('href') if len(soup.findAll('div',{'class': 'grid-product'})) > 0 else None
+        return productParser(rawSearchResult)
+    except:pass
+
 
 findProduct('HyperX Cloud Stinger')

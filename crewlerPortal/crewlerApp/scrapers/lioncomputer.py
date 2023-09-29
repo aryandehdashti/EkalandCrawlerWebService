@@ -39,9 +39,11 @@ def productParser(productUrl):
 
 
 def findProduct(productName):
-    res = requests.get(SEARCH_URL+productName)
-    soup = BeautifulSoup(res.content, 'html.parser')
-    rawSearchResult = soup.find('div',{'class': 'products-grid'}).find_all('div',{'class': 'product-outer'})[0]
-    return productParser(rawSearchResult.find('a').get('href') if productName in rawSearchResult.find('h5').text else None)
+    try:
+        res = requests.get(SEARCH_URL+productName)
+        soup = BeautifulSoup(res.content, 'html.parser')
+        rawSearchResult = soup.find('div',{'class': 'products-grid'}).find_all('div',{'class': 'product-outer'})[0]
+        return productParser(rawSearchResult.find('a').get('href') if rawSearchResult.find('h5').text in productName else None)
+    except:pass
 
 

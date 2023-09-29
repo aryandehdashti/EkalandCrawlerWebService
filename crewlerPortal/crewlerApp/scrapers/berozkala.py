@@ -47,12 +47,14 @@ def productParser(productUrl):
     
 
 def findProduct(productName):
-    res = requests.get(SEARCH_URL+productName)
-    product = json.loads(res.content)[0] if len(json.loads(res.content)) > 0 else None
-    if product is not None:
-        value = product["value"]
-        slug = product["slug"]
-        return productParser(PRODUCT_URL+value+'/'+slug)
+    try:
+        res = requests.get(SEARCH_URL+productName)
+        product = json.loads(res.content)[0] if len(json.loads(res.content)) > 0 else None
+        if product is not None:
+            value = product["value"]
+            slug = product["slug"]
+            return productParser(PRODUCT_URL+value+'/'+slug)
 
-    else:
-        return 'Not found in Berozkala'
+        else:
+            return 'Not found in Berozkala'
+    except:pass
