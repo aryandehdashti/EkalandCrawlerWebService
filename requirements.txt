@@ -7,7 +7,9 @@ bs4==0.0.1
 certifi==2023.7.22
 charset-normalizer==3.2.0
 Django==4.2.5
+django-apscheduler==0.6.2
 django-compat==1.0.15
+django-crontab==0.7.1
 django-filter==23.3
 django-picklefield==3.1
 djangorestframework==3.14.0
