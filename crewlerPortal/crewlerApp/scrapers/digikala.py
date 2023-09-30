@@ -7,21 +7,23 @@ PRODUCT_URL = 'https://api.digikala.com/v1/product/'
 def productParser(product):
     varients = []
     if product == None:
-        return{
+        return[{
             "title": "ناموجود",
             "color": "ناموجود",
             "status": "ناموجود",
             "warranty": "ناموجود",
+            "insurance":"ندارد",
             "price": "ناموجود",
             "supplier": "ناموجود",
             "url": "ناموجود"
-        }
+        }]
     for item in product["variants"]:
         jsonProduct = {
             "title": product["title_fa"],
             "color": item["color"]["title"],
             "status": product["status"],
             "warranty": item["warranty"]["title_fa"],
+            "insurance":"ندارد",
             "price": item["price"]["selling_price"],
             "supplier": "digikala",
             "url": BASE_URL + product["url"]["uri"]
@@ -37,5 +39,4 @@ def findProduct(productName):
         return productParser(product if product["title_fa"] in productName else None)
 
     except:
-        return 'Not Found from Digikala'
-
+        pass

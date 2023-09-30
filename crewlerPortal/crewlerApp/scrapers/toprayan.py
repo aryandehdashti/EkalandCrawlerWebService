@@ -27,21 +27,22 @@ def productParser(productUrl):
                         "color": color,
                         "status": status,
                         "warranty":warranty,
+                        "insurance":"ندارد",
                         "price":price,
                         "supplier":supplier,
                         "url": url})
                 return products
             else:
-                return{
+                return[{
             "title": rawProduct.find('h1',{'class':'title1'}).text,
             "color": "ناموحود",
             "status": "ناموحود",
             "warranty":"ناموحود",
+            "insurance":"ندارد",
             "price":"ناموحود",
             "supplier":'Toprayan',
             "url": productUrl
-            }
-        else: return "Not Found in Toprayan"
+            }]
     except:pass
 
 

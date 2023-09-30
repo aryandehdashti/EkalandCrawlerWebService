@@ -1,8 +1,12 @@
 import pandas as pd
-import baninopc, berozkala, digikala, exo, lioncomputer, meghdadit, shopmit,toprayan
+from . import baninopc, berozkala, digikala, exo, lioncomputer, meghdadit, shopmit,toprayan
+import os
+
 
 def fetchProducts():
-    df = pd.read_csv('./source.csv')
+    thisFilePath = os.path.dirname(os.path.abspath(__file__))
+    csvFilePath = os.path.join(thisFilePath,'source.csv')
+    df = pd.read_csv(csvFilePath)
     products = df['نام']
 
     result = []
@@ -17,4 +21,3 @@ def fetchProducts():
         result.append(toprayan.findProduct(product_))
     return result
 
-    

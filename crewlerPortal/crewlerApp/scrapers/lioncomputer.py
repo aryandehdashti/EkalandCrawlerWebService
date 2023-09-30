@@ -17,7 +17,7 @@ def productParser(productUrl):
         warranty = 'ناموحود'
         price = 'ناموحود'
         supplier = 'lioncomputer'
-        url = productUrl
+        url = 'ناموجود'
     else:
         productName = rawProduct.find('h1').text
         color = rawProduct.find_all(string=re.compile("رنگ"))[0] if len(rawProduct.find_all(string=re.compile("رنگ"))) > 0 else 'نامعلوم'
@@ -27,15 +27,16 @@ def productParser(productUrl):
         supplier = 'lioncomputer'
         url = productUrl
     
-    return{
+    return[{
         "title": productName,
         "color": color,
         "status": status,
         "warranty":warranty,
+        "insurance":"ندارد",
         "price":price,
         "supplier":supplier,
         "url": url
-    }
+    }]
 
 
 def findProduct(productName):

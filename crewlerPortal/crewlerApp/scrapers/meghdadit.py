@@ -13,9 +13,9 @@ def productParser(productUrl):
         products = []
         for product in json.loads(rawProduct.find('input',{'id':'hfdPrices'}).get('value')):
             productName = rawProduct.find('span', {"id":"SharedMessage_ContentPlaceHolder1_lblItemTitle"}).text
-            color = product["ProductColorTitle"]
+            color = product["ProductColorTitle"] if product["ProductColorTitle"] != None else 'نامعلوم'
             status = "موجود"
-            warranty = product["WarrantyTitle"]
+            warranty = product["WarrantyTitle"] if product["WarrantyTitle"] is not None else 'نامعلوم'
             price = product["FormattedPrice"]
             supplier = 'meghdadit'
             url = productUrl
@@ -24,6 +24,7 @@ def productParser(productUrl):
                 "color": color,
                 "status": status,
                 "warranty":warranty,
+                "insurance":"ندارد",
                 "price":price,
                 "supplier":supplier,
                 "url": url})
@@ -37,14 +38,15 @@ def productParser(productUrl):
         price = 'ناموحود'
         supplier = 'meghdadit'
         url = productUrl
-        return{
+        return[{
         "title": productName,
         "color": color,
         "status": status,
         "warranty":warranty,
+        "insurance":"ندارد",
         "price":price,
         "supplier":supplier,
-        "url": url}
+        "url": url}]
 
 def findProduct(productName):
     try:

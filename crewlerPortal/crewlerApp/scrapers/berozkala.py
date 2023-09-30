@@ -34,7 +34,7 @@ def productParser(productUrl):
         insurance = 'ناموحود'
         supplier = 'berozkala'
         url = productUrl
-    return {
+    return [{
         "title": productName,
         "color": color,
         "status": status,
@@ -43,7 +43,7 @@ def productParser(productUrl):
         "insurance":insurance,
         "supplier":supplier,
         "url": url
-    }
+    }]
     
 
 def findProduct(productName):
@@ -55,6 +55,4 @@ def findProduct(productName):
             slug = product["slug"]
             return productParser(PRODUCT_URL+value+'/'+slug)
 
-        else:
-            return 'Not found in Berozkala'
     except:pass

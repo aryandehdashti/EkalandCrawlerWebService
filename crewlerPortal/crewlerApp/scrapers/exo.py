@@ -26,17 +26,16 @@ def productParser(productUrl):
                 price = 'ناموجود'
                 supplier = 'Exo'
                 url = productUrl
-            return{
+            return[{
                 "title": productName,
                 "color": color,
                 "status": status,
                 "warranty":warranty,
+                "insurance":"ندارد",
                 "price":price,
                 "supplier":supplier,
                 "url": url
-            }
-        else:
-             return 'Not Found in Exo'
+            }]
 
 def findProduct(productName):
     try:
@@ -46,5 +45,3 @@ def findProduct(productName):
         return productParser(rawSearchResult)
     except:pass
 
-
-findProduct('HyperX Cloud Stinger')

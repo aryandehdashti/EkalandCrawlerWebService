@@ -17,15 +17,16 @@ def productParser(productUrl):
     status = 'ناموجود' if len(rawProduct.findAll(string=re.compile('محصول مورد نظر در حال حاضر موجود نمی‌باشد'))) > 0 else 'موجود'
     supplier = 'Baninopc'
     url = productUrl
-    return {
+    return [{
         "title": productName,
         "color": color,
         "status": status,
         "warranty":warranty,
+        "insurance":"ندارد",
         "price":price,
         "supplier":supplier,
         "url": url
-    }
+    }]
 
 def findProduct(productName):
     try:
@@ -36,7 +37,5 @@ def findProduct(productName):
             slug = product["slug"]
             return productParser(PRODUCT_URL+uniqueId+'/'+slug)
 
-        else:
-            return 'Not found in Baninopc'
     except: pass
     

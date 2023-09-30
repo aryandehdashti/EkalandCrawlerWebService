@@ -22,19 +22,19 @@ def productParser(productUrl):
                   "title": productName,
                   "status": status,
                   "warranty":warranty,
+                  "insurance":"ندارد",
                   "price":price,
                   "supplier":supplier,
                   "url": url})
           return products
       elif rawProduct.find('div',{'class':'sb_product_inventory'}).find('strong').text == 'ناموجود':
-          return{
+          return[{
           "title": 'ناموحود',
           "status": 'ناموحود',
           "warranty":'ناموحود',
           "price":'ناموحود',
           "supplier":'Shopmit',
-          "url": productUrl}
-    else: return 'Not found in Shopmit'
+          "url": productUrl}]
 
 def findProduct(productName):
     try:

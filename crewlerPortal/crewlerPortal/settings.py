@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = 'django-insecure-(^3t!7ea&t)vo@^c=1yn*)k2qbhso&#3n=@+=r!*&-r@%zx%ks'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crewlerApp',
     'rest_framework',
+    'django_crontab',
+    'crewlerApp',
 ]
 
 REST_FRAMEWORK = {
@@ -48,6 +49,9 @@ REST_FRAMEWORK = {
 ]
 }
 
+CRONJOBS = [
+    ('*/12 * * * *', 'crewlerApp.getProducts.fetch'),
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
