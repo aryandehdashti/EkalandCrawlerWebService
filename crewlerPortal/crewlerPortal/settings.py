@@ -50,7 +50,7 @@ REST_FRAMEWORK = {
 }
 
 CRONJOBS = [
-    ('*/12 * * * *', 'crewlerApp.getProducts.fetch'),
+    ('*/4 * * * *', 'crewlerApp.getProducts.fetch'),
 ]
 
 MIDDLEWARE = [

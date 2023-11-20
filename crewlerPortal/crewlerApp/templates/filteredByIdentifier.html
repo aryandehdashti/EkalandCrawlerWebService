@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Filter Products By Identifier</title>
+  <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ccc;
+      }
+      
+      th, td {
+        padding: 5px;
+        text-align: center;
+      }
+      
+      th {
+        background-color: #ccc;
+      }  
+      nav {
+        background-color: #ccc;
+        padding: 10px;
+      }
+      
+      nav a {
+        color: #000;
+        text-decoration: none;
+        padding: 10px;
+      }
+      
+      nav a:hover {
+        background-color: #000;
+        color: #fff;
+      }
+      
+      @media screen and (max-width: 768px) {
+        nav {
+          display: flex;
+          flex-direction: column;
+        }
+      
+        nav a {
+          width: 100%;
+        }
+      }
+      body {
+        padding: 50px;
+      }
+  </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Last Checked Products</a>
+        <a href="/filteredByDate">Filter by Date</a>
+        <a href="/filteredByIdentifier">Filter by Identifier</a>
+        <a href="/filteredByProvider">Filter by Provider</a>
+
+        <a href="/all/">All Products History</a>
+      </nav>
+    
+  <h1>Filter By Identifier</h1>
+  <form method="POST">
+  {% csrf_token %}
+  <label for="identifier">Identifier:</label>
+  <input type="text" id="identifier" name="identifier" required>
+  <button type="submit">Filter</button>
+  </form>
+  {% if filteredProductsByIdentifier %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Color</th>
+        <th>Status</th>
+        <th>warranty</th>
+        <th>price</th>
+        <th>insurance</th>
+        <th>supplier</th>
+        <th>url</th>
+        <th>dateTime</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in filteredProductsByIdentifier %}
+        <tr>
+          <td>{{ product.title }}</td>
+          <td>{{ product.color }}</td>
+          <td>{{ product.status }}</td>
+          <td>{{ product.warranty }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.insurance }}</td>
+          <td>{{ product.supplier }}</td>
+          <td>{{ product.url }}</td>
+          <td>{{ product.dateTime }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No products found in the given Identifier.</p>
+  {% endif %}
+
+</body>
+</html>

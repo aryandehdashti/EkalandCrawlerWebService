@@ -1,13 +1,15 @@
 import requests
+import re
 
-BASE_URL = 'https://www.digikala.com'
-SEARCH_URL = 'https://api.digikala.com/v1/search/?q='
 PRODUCT_URL = 'https://api.digikala.com/v1/product/'
 
-def productParser(product):
+def productParser(productURL,identifier):
+    productID = re.search(r'dkp-(\d+)', productURL).group(1)
+    product = requests.get(PRODUCT_URL + str(productID) + '/').json()["data"]["product"]
     varients = []
     if product == None:
         return[{
+            "identifier":identifier,
             "title": "ناموجود",
             "color": "ناموجود",
             "status": "ناموجود",
@@ -19,6 +21,7 @@ def productParser(product):
         }]
     for item in product["variants"]:
         jsonProduct = {
+            "identifier": identifier,
             "title": product["title_fa"],
             "color": item["color"]["title"],
             "status": product["status"],
@@ -26,17 +29,17 @@ def productParser(product):
             "insurance":"ندارد",
             "price": item["price"]["selling_price"],
             "supplier": "digikala",
-            "url": BASE_URL + product["url"]["uri"]
+            "url": productURL
         }
         varients.append(jsonProduct)
     return varients
 
 
-def findProduct(productName):
-    try:
-        searchResult = str(requests.get(SEARCH_URL + productName).json()["data"]["products"][0]["id"])
-        product = requests.get(PRODUCT_URL + searchResult + "/").json()["data"]["product"]
-        return productParser(product if product["title_fa"] in productName else None)
+# def findProduct(productName):
+#     try:
+#         searchResult = str(requests.get(SEARCH_URL + productName).json()["data"]["products"][0]["id"])
+#         product = requests.get(PRODUCT_URL + searchResult + "/").json()["data"]["product"]
+#         return productParser(product if product["title_fa"] in productName else None)
 
-    except:
-        pass
+#     except:
+#         pass

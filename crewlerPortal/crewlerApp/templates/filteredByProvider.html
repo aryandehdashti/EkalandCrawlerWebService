@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>َAll Products</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>Filter Products By Provider</title>
   <style>
     table {
         border-collapse: collapse;
         width: 100%;
         border: 1px solid #ccc;
-      }
-      body {
-        padding: 50px;
       }
       
       th, td {
@@ -46,8 +44,10 @@
           width: 100%;
         }
       }
+      body {
+        padding: 50px;
+      }
   </style>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -57,13 +57,28 @@
         <a href="/filteredByDate">Filter by Date</a>
         <a href="/filteredByIdentifier">Filter by Identifier</a>
         <a href="/filteredByProvider">Filter by Provider</a>
-
         <a href="/all/">All Products History</a>
       </nav>
     
-  <h1>All Products</h1>
+  <h1>Filter By Provider</h1>
+  <form method="POST">
+  {% csrf_token %}
+  <label for="provider">Provider:</label>
+  <select id="provider" name="provider" required>
+    <option value="baninopc">baninopc</option>
+    <option value="berozkala">berozkala</option>
+    <option value="digikala">digikala</option>
+    <option value="exo">exo</option>
+    <option value="lioncomputer">lioncomputer</option>
+    <option value="meghdadit">meghdadit</option>
+    <option value="shopmit">shopmit</option>
+    <option value="toprayan">toprayan</option>
+    </select> 
+    <button type="submit">Filter</button>
+   </form>
+  {% if filteredProductsByProvider %}
 
-  {% for identifier, products in allData.items %}
+  {% for identifier, products in filteredProductsByProvider.items %}
   <div class="accordion" id="accordionExample">
     <div class="card">
       <div class="card-header" id="heading{{ forloop.counter }}">
@@ -110,6 +125,11 @@
       </div>
     </div>
   </div>
-{% endfor %}
+{% empty %}
+  <p>No products found for the given provider.</p>
+{% endfor %}  {% else %}
+  <p>No products found in the given provider.</p>
+  {% endif %}
+
 </body>
 </html>

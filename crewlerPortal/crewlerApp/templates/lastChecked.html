@@ -8,82 +8,132 @@
       width: 100%;
       border: 1px solid #ccc;
     }
-    
+
     th, td {
       padding: 5px;
       text-align: center;
     }
-    
+
     th {
       background-color: #ccc;
     }
+
     nav {
       background-color: #ccc;
       padding: 10px;
     }
-    
+
     nav a {
       color: #000;
       text-decoration: none;
       padding: 10px;
     }
-    
+
     nav a:hover {
       background-color: #000;
       color: #fff;
     }
-    
+
     @media screen and (max-width: 768px) {
       nav {
         display: flex;
         flex-direction: column;
       }
-    
+
       nav a {
         width: 100%;
       }
     }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    body {
+      padding: 50px;
+    }
   </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <nav>
     <a href="/">Last Checked Products</a>
-    <a href="/filtered">Filter</a>
+    <a href="/filteredByDate">Filter By Date</a>
+    <a href="/filteredByIdentifier">Filter by Identifier</a>
+    <a href="/filteredByProvider">Filter by Provider</a>
+
     <a href="/all/">All Products History</a>
   </nav>
 
   <h1>Last Checked Products</h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Product Name</th>
-        <th>Color</th>
-        <th>Status</th>
-        <th>warranty</th>
-        <th>price</th>
-        <th>insurance</th>
-        <th>supplier</th>
-        <th>url</th>
-        <th>dateTime</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for product in lastSeries %}
-        <tr>
-          <td>{{ product.title }}</td>
-          <td>{{ product.color }}</td>
-          <td>{{ product.status }}</td>
-          <td>{{ product.warranty }}</td>
-          <td>{{ product.price }}</td>
-          <td>{{ product.insurance }}</td>
-          <td>{{ product.supplier }}</td>
-          <td>{{ product.url }}</td>
-          <td>{{ product.dateTime }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" name="hours" value="4" >4 Hours</button>
+    <button type="submit" name="hours" value="8">8 Hours</button>
+    <button type="submit" name="hours" value="12">12 Hours</button>
+    <button type="submit" name="hours" value="24">24 Hours</button>
+  </form>
+  <span></span>
+  {% for identifier, products in lastSeries.items %}
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="heading{{ forloop.counter }}">
+        <h2 class="mb-0">
+          <button class="btn" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+            ( {{ identifier }} )  {{ products.0.title }}
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionExample">
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Color</th>
+                <th>Status</th>
+                <th>Warranty</th>
+                <th>Price</th>
+                <th>Insurance</th>
+                <th>Supplier</th>
+                <th>URL</th>
+                <th>DateTime</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in products %}
+              <tr>
+                <td>{{ product.title }}</td>
+                <td>{{ product.color }}</td>
+                <td>{{ product.status }}</td>
+                <td>{{ product.warranty }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.insurance }}</td>
+                <td>{{ product.supplier }}</td>
+                <td>{{ product.url }}</td>
+                <td>{{ product.dateTime }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
   <button type="button" onclick="window.print()">Print</button>
 </body>
 </html>

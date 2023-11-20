@@ -1,25 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>َAll Products</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+  <title>Filtered Products By Date</title>
   <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        border: 1px solid #ccc;
-      }
-      body {
-        padding: 50px;
+    body {
+        font-family: sans-serif;
       }
       
-      th, td {
+      h1 {
+        text-align: center;
+      }
+      
+      form {
+        margin: auto;
+        width: 20%;
+      }
+      
+      input,
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      
+      button {
+        background-color: #000;
+        color: #fff;
+        padding:10px
+      }
+      
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      th,
+      td {
         padding: 5px;
         text-align: center;
       }
       
       th {
         background-color: #ccc;
-      }  
+      }
+      
+      @media screen and (max-width: 768px) {
+        form {
+          width: 100%;
+        }
+      } 
       nav {
         background-color: #ccc;
         padding: 10px;
@@ -46,29 +76,41 @@
           width: 100%;
         }
       }
-  </style>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <nav>
+      body {
+        padding: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <nav>
         <a href="/">Last Checked Products</a>
-        <a href="/filteredByDate">Filter by Date</a>
+        <a href="/filteredByDate">Filter By Date</a>
         <a href="/filteredByIdentifier">Filter by Identifier</a>
         <a href="/filteredByProvider">Filter by Provider</a>
 
         <a href="/all/">All Products History</a>
       </nav>
-    
-  <h1>All Products</h1>
+            
+  <h1>Filtered Products</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <label for="fromDate">From Date:</label>
+    <input type="date" id="fromDate" name="fromDate" required>
+    <label for="toDate">To Date:</label>
+    <input type="date" id="toDate" name="toDate" required>
+    <button type="submit">Filter</button>
 
-  {% for identifier, products in allData.items %}
+  </form>
+  {% if filteredDataByDate %}
+  {% for identifier, products in filteredDataByDate.items %}
   <div class="accordion" id="accordionExample">
     <div class="card">
       <div class="card-header" id="heading{{ forloop.counter }}">
         <h2 class="mb-0">
-          <button class="btn" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+          <button class="btn"type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
             ( {{ identifier }} )  {{ products.0.title }}
           </button>
         </h2>
@@ -110,6 +152,12 @@
       </div>
     </div>
   </div>
-{% endfor %}
+{% empty %}
+  <p>No products found in the given date range.</p>
+{% endfor %}  {% else %}
+  <p>No products found in the given date range.</p>
+  {% endif %}
+  <button type="button" onclick="window.print()">Print</button>
 </body>
+
 </html>

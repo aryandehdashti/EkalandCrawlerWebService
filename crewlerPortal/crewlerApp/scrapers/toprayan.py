@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-BASE_URL = 'https://toprayan.com'
-SEARCH_URL = 'https://toprayan.com/home/search/'
+# BASE_URL = 'https://toprayan.com'
+# SEARCH_URL = 'https://toprayan.com/home/search/'
 
-def productParser(productUrl):
+def productParser(productUrl,identifier):
     try:
         if productUrl is not None:
             respond = requests.get(productUrl)
@@ -23,6 +23,7 @@ def productParser(productUrl):
                     supplier = 'Toprayan'
                     url = productUrl
                     products.append({
+                        "identifier":identifier,
                         "title": productName,
                         "color": color,
                         "status": status,
@@ -34,6 +35,7 @@ def productParser(productUrl):
                 return products
             else:
                 return[{
+            "identifier":identifier,
             "title": rawProduct.find('h1',{'class':'title1'}).text,
             "color": "ناموحود",
             "status": "ناموحود",
@@ -47,10 +49,10 @@ def productParser(productUrl):
 
 
 
-def findProduct(productName):
-    try:
-        res = requests.get(SEARCH_URL + productName)
-        soup = BeautifulSoup(res.content,'html.parser')
-        rawSearchResult = soup.findAll('a')[1].get('href') if len(soup.findAll('a')) > 0 and soup.find_all('a')[1].text in productName else None
-        return productParser(BASE_URL+rawSearchResult if rawSearchResult is not None else None)
-    except:pass
+# def findProduct(productName):
+#     try:
+#         res = requests.get(SEARCH_URL + productName)
+#         soup = BeautifulSoup(res.content,'html.parser')
+#         rawSearchResult = soup.findAll('a')[1].get('href') if len(soup.findAll('a')) > 0 and soup.find_all('a')[1].text in productName else None
+#         return productParser(BASE_URL+rawSearchResult if rawSearchResult is not None else None)
+#     except:pass

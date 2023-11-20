@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 import urllib3
 
-SEARCH_URL = 'https://shopmit.net/search/'
+# SEARCH_URL = 'https://shopmit.net/search/'
 
-def productParser(productUrl):
+def productParser(productUrl,identifier):
     if productUrl is not None:
       http = urllib3.PoolManager()
       response = http.request('GET', productUrl)
@@ -19,6 +19,7 @@ def productParser(productUrl):
               supplier = 'Shopmit'
               url = productUrl
               products.append({
+                  "identifier":identifier,
                   "title": productName,
                   "status": status,
                   "warranty":warranty,
@@ -29,6 +30,7 @@ def productParser(productUrl):
           return products
       elif rawProduct.find('div',{'class':'sb_product_inventory'}).find('strong').text == 'ناموجود':
           return[{
+            "identifier":identifier,
           "title": 'ناموحود',
           "status": 'ناموحود',
           "warranty":'ناموحود',
@@ -36,13 +38,13 @@ def productParser(productUrl):
           "supplier":'Shopmit',
           "url": productUrl}]
 
-def findProduct(productName):
-    try:
-        http = urllib3.PoolManager()
-        response = http.request('GET', SEARCH_URL + productName)
-        soup = BeautifulSoup(response.data, 'html.parser')
-        rawSearchResult = soup.find('div', {'class': 'sb_item_info'}).find('a',{'class':'sb_item_title'}).get('href') if len(soup.findAll('div', {'class': 'sb_item_info'})) > 0 else None
-        return productParser(rawSearchResult if rawSearchResult is not None and rawSearchResult.find('a', {'class': 'sb_item_title'}).text in productName else None)
-    except:pass
+# def findProduct(productName):
+#     try:
+#         http = urllib3.PoolManager()
+#         response = http.request('GET', SEARCH_URL + productName)
+#         soup = BeautifulSoup(response.data, 'html.parser')
+#         rawSearchResult = soup.find('div', {'class': 'sb_item_info'}).find('a',{'class':'sb_item_title'}).get('href') if len(soup.findAll('div', {'class': 'sb_item_info'})) > 0 else None
+#         return productParser(rawSearchResult if rawSearchResult is not None and rawSearchResult.find('a', {'class': 'sb_item_title'}).text in productName else None)
+#     except:pass
 
 

@@ -5,7 +5,7 @@ import re
 
 SEARCH_URL = 'https://exo.ir/index.php?route=product/search&search='
 
-def productParser(productUrl):
+def productParser(productUrl,identifier):
         if productUrl is not None:
             respond = requests.get(productUrl)
             soup = BeautifulSoup(respond.content, 'html.parser')
@@ -27,6 +27,7 @@ def productParser(productUrl):
                 supplier = 'Exo'
                 url = productUrl
             return[{
+                 "identifier":identifier,
                 "title": productName,
                 "color": color,
                 "status": status,
@@ -37,11 +38,11 @@ def productParser(productUrl):
                 "url": url
             }]
 
-def findProduct(productName):
-    try:
-        res = requests.get(SEARCH_URL + productName)
-        soup = BeautifulSoup(res.content, 'html.parser')
-        rawSearchResult = soup.find('div',{'class': 'grid-product'}).find('a').get('href') if len(soup.findAll('div',{'class': 'grid-product'})) > 0 else None
-        return productParser(rawSearchResult)
-    except:pass
+# def findProduct(productName):
+#     try:
+#         res = requests.get(SEARCH_URL + productName)
+#         soup = BeautifulSoup(res.content, 'html.parser')
+#         rawSearchResult = soup.find('div',{'class': 'grid-product'}).find('a').get('href') if len(soup.findAll('div',{'class': 'grid-product'})) > 0 else None
+#         return productParser(rawSearchResult)
+#     except:pass
 

@@ -7,7 +7,7 @@ SEARCH_URL = 'https://berozkala.com/api/search?kw='
 PRODUCT_URL = 'https://berozkala.com/fa/product/'
 GET_PRICE_URL = 'https://berozkala.com/api/Options/GetPrice/'
 
-def productParser(productUrl):
+def productParser(productUrl,identifier):
     respond = requests.get(productUrl)
     soup = BeautifulSoup(respond.content,'html.parser')
     rawProduct = soup.find('div',{'class':'summary entry-summary col-lg-24 col-md-24 col-sm-21 col-xs-36'})
@@ -19,9 +19,9 @@ def productParser(productUrl):
         for warranty_ in rawWarranty:
             for color_ in rawColors:
                 # return print(type(color_))
-                color = color_.text if color_ is not "" else "نامعلوم"
+                color = color_.text if color_ != "" else "نامعلوم"
                 status = 'موجود در انبار'
-                warranty = warranty_.text  if warranty_ is not "" else "ندارد"
+                warranty = warranty_.text  if warranty_ != "" else "ندارد"
                 price = int(mainPrice) + int(requests.get(GET_PRICE_URL + color_.get('value')).json()[0]['price']) + int(requests.get(GET_PRICE_URL + warranty_.get('value')).json()[0]['price'])
                 insurance = rawProduct.find('label',{'for':'html'}).text.strip() if len(rawProduct.find_all('label',{'for':'html'})) > 0 else "ناموجود"
                 supplier = 'berozkala'
@@ -35,6 +35,7 @@ def productParser(productUrl):
         supplier = 'berozkala'
         url = productUrl
     return [{
+        "identifier": identifier,
         "title": productName,
         "color": color,
         "status": status,
@@ -46,13 +47,13 @@ def productParser(productUrl):
     }]
     
 
-def findProduct(productName):
-    try:
-        res = requests.get(SEARCH_URL+productName)
-        product = json.loads(res.content)[0] if len(json.loads(res.content)) > 0 else None
-        if product is not None:
-            value = product["value"]
-            slug = product["slug"]
-            return productParser(PRODUCT_URL+value+'/'+slug)
+# def findProduct(productName):
+#     try:
+#         res = requests.get(SEARCH_URL+productName)
+#         product = json.loads(res.content)[0] if len(json.loads(res.content)) > 0 else None
+#         if product is not None:
+#             value = product["value"]
+#             slug = product["slug"]
+#             return productParser(PRODUCT_URL+value+'/'+slug)
 
-    except:pass
+#     except:pass

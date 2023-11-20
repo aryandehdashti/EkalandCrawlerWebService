@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-BASE_URL = 'https://meghdadit.com'
-SEARCH_URL = 'https://meghdadit.com/productlist/?s='
+# BASE_URL = 'https://meghdadit.com'
+# SEARCH_URL = 'https://meghdadit.com/productlist/?s='
 
-def productParser(productUrl):
+def productParser(productUrl,identifier):
     try:
         respond = requests.get(productUrl)
         soup = BeautifulSoup(respond.content, 'html.parser')
@@ -20,6 +20,7 @@ def productParser(productUrl):
             supplier = 'meghdadit'
             url = productUrl
             products.append({
+                "identifier":identifier,
                 "title": productName,
                 "color": color,
                 "status": status,
@@ -39,6 +40,7 @@ def productParser(productUrl):
         supplier = 'meghdadit'
         url = productUrl
         return[{
+        "identifier": identifier,
         "title": productName,
         "color": color,
         "status": status,
@@ -48,10 +50,10 @@ def productParser(productUrl):
         "supplier":supplier,
         "url": url}]
 
-def findProduct(productName):
-    try:
-        res = requests.get(SEARCH_URL + productName)
-        soup = BeautifulSoup(res.content, 'html.parser')
-        rawSearchResult = soup.find('ul',{'id':'SharedMessage_ContentPlaceHolder1_divThumbnailView'}).find('li')
-        return productParser(BASE_URL+rawSearchResult.find('a').get('href') if rawSearchResult is not None and rawSearchResult.find('a').text in productName else None)
-    except: pass
+# def findProduct(productName):
+#     try:
+#         res = requests.get(SEARCH_URL + productName)
+#         soup = BeautifulSoup(res.content, 'html.parser')
+#         rawSearchResult = soup.find('ul',{'id':'SharedMessage_ContentPlaceHolder1_divThumbnailView'}).find('li')
+#         return productParser(BASE_URL+rawSearchResult.find('a').get('href') if rawSearchResult is not None and rawSearchResult.find('a').text in productName else None)
+#     except: pass

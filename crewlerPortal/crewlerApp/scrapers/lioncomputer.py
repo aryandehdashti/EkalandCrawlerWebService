@@ -2,9 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-SEARCH_URL = 'https://www.lioncomputer.com/shop/search?q='
+# SEARCH_URL = 'https://www.lioncomputer.com/shop/search?q='
 
-def productParser(productUrl):
+def productParser(productUrl,identifier):
     try:
         respond = requests.get(productUrl)
         soup = BeautifulSoup(respond.content, 'html.parser')
@@ -28,6 +28,7 @@ def productParser(productUrl):
         url = productUrl
     
     return[{
+        "identifier":identifier,
         "title": productName,
         "color": color,
         "status": status,
@@ -39,12 +40,12 @@ def productParser(productUrl):
     }]
 
 
-def findProduct(productName):
-    try:
-        res = requests.get(SEARCH_URL+productName)
-        soup = BeautifulSoup(res.content, 'html.parser')
-        rawSearchResult = soup.find('div',{'class': 'products-grid'}).find_all('div',{'class': 'product-outer'})[0]
-        return productParser(rawSearchResult.find('a').get('href') if rawSearchResult.find('h5').text in productName else None)
-    except:pass
+# def findProduct(productName):
+#     try:
+#         res = requests.get(SEARCH_URL+productName)
+#         soup = BeautifulSoup(res.content, 'html.parser')
+#         rawSearchResult = soup.find('div',{'class': 'products-grid'}).find_all('div',{'class': 'product-outer'})[0]
+#         return productParser(rawSearchResult.find('a').get('href') if rawSearchResult.find('h5').text in productName else None)
+#     except:pass
 
 
