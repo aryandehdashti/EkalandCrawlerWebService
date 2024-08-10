@@ -2,7 +2,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <title>Filter Products By Provider</title>
+  <title>Filter Products</title>
   <style>
     table {
         border-collapse: collapse;
@@ -54,31 +54,46 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <nav>
         <a href="/">Last Checked Products</a>
-        <a href="/filteredByDate">Filter by Date</a>
+        <a href="/filter">Filter Products</a>
+        {% comment %} <a href="/filteredByDate">Filter by Date</a>
         <a href="/filteredByIdentifier">Filter by Identifier</a>
-        <a href="/filteredByProvider">Filter by Provider</a>
+        <a href="/filteredByProvider">Filter by Provider</a> {% endcomment %}
         <a href="/all/">All Products History</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="/logs">Logs</a>
+
       </nav>
     
-  <h1>Filter By Provider</h1>
+  <h1>Filter Products</h1>
   <form method="POST">
   {% csrf_token %}
   <label for="provider">Provider:</label>
-  <select id="provider" name="provider" required>
-    <option value="baninopc">baninopc</option>
-    <option value="berozkala">berozkala</option>
-    <option value="digikala">digikala</option>
-    <option value="exo">exo</option>
-    <option value="lioncomputer">lioncomputer</option>
-    <option value="meghdadit">meghdadit</option>
-    <option value="shopmit">shopmit</option>
-    <option value="toprayan">toprayan</option>
-    </select> 
-    <button type="submit">Filter</button>
-   </form>
-  {% if filteredProductsByProvider %}
+  <select id="provider" name="provider">
+    <option value=""></option>
+    <option value="baninopc" {% if form_data.provider == "baninopc" %}selected{% endif %}>baninopc</option>
+    <option value="berozkala" {% if form_data.provider == "berozkala"  %}selected{% endif %}>berozkala</option>
+    <option value="digikala" {% if form_data.provider == "digikala" %}selected{% endif %}>digikala</option>
+    <option value="exo" {% if form_data.provider == "exo"  %}selected{% endif %}>exo</option>
+    <option value="lioncomputer" {% if form_data.provider == "lioncomputer" %}selected{% endif %}>lioncomputer</option>
+    <option value="meghdadit" {% if form_data.provider == "meghdadit" %}selected{% endif %}>meghdadit</option>
+    <option value="shopmit" {% if form_data.provider == "shopmit" %}selected{% endif %}>shopmit</option>
+    <option value="toprayan" {% if form_data.provider == "toprayan" %}selected{% endif %}>toprayan</option>
+    <option value="torob" {% if form_data.provider == "torob" %}selected{% endif %}>torob</option>
+    <option value="emalls" {% if form_data.provider == "emalls" %}selected{% endif %}>emalls</option>
+  </select> 
+  <label for="fromDate">From Date:</label>
+  <input type="date" id="fromDate" name="fromDate", value="{{ form_data.fromDate }}">
+  <label for="toDate">To Date:</label>
+  <input type="date" id="toDate" name="toDate", value="{{ form_data.toDate }}">
+  <label for="identifier">Identifier:</label>
+  <input type="text" id="identifier" name="identifier", value="{{ form_data.identifier }}">
+  <button type="submit">Filter</button>
+  <button type="submit" name="download_excel">Download Excel</button>
+  </form>
+{% if filteredData %}
 
-  {% for identifier, products in filteredProductsByProvider.items %}
+
+  {% for identifier, products in filteredData.items %}
   <div class="accordion" id="accordionExample">
     <div class="card">
       <div class="card-header" id="heading{{ forloop.counter }}">
@@ -126,9 +141,9 @@
     </div>
   </div>
 {% empty %}
-  <p>No products found for the given provider.</p>
+  <p>No products found .</p>
 {% endfor %}  {% else %}
-  <p>No products found in the given provider.</p>
+  <p>No products found .</p>
   {% endif %}
 
 </body>

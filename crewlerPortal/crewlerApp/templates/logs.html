@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Logs</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 5px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ccc;
+    }
+
+    nav {
+      background-color: #ccc;
+      padding: 10px;
+    }
+
+    nav a {
+      color: #000;
+      text-decoration: none;
+      padding: 10px;
+    }
+
+    nav a:hover {
+      background-color: #000;
+      color: #fff;
+    }
+
+    @media screen and (max-width: 768px) {
+      nav {
+        display: flex;
+        flex-direction: column;
+      }
+
+      nav a {
+        width: 100%;
+      }
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    body {
+      padding: 50px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <nav>
+    <a href="/">Last Checked Products</a>
+    <a href="/filter">Filter Products</a>
+    {% comment %} <a href="/filteredByDate">Filter by Date</a>
+    <a href="/filteredByIdentifier">Filter by Identifier</a>
+    <a href="/filteredByProvider">Filter by Provider</a> {% endcomment %}
+    <a href="/all/">All Products History</a>
+    <a href="{% url 'logout' %}">Logout</a>
+    <a href="/logs">Logs</a>
+</nav>
+
+  <h1>Logs</h1>
+
+    <pre>
+        {% for line in log_data %}
+          {{ line }}
+        {% endfor %}
+    </pre>
+  
+  
+</body>
+</html>

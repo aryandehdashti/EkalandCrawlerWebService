@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 # class sourceProduct(models.Model):
@@ -22,7 +23,8 @@ class SourceProduct(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.identifier+ ' '+self.title+ ' '+ self.provider
+        status ='✅' if self.is_active else '❌'
+        return self.identifier+ ' | '+self.title+ ' | '+ self.provider+ ' | ' + status
 
 class Product(models.Model):
     identifier = models.CharField(max_length=255)
@@ -37,5 +39,5 @@ class Product(models.Model):
     dateTime = models.DateTimeField(auto_now=True,null=True,blank=True)
 
     def __str__(self):
-        return self.title+ ' '+self.dateTime.strftime("%m/%d - %H:%M")
+        return self.identifier+' | '+self.title+ ' | '+self.dateTime.strftime("%m/%d - %H:%M")
 

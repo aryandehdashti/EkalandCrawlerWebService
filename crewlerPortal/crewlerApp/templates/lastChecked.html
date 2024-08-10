@@ -69,12 +69,15 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <nav>
     <a href="/">Last Checked Products</a>
-    <a href="/filteredByDate">Filter By Date</a>
+    <a href="/filter">Filter Products</a>
+    {% comment %} <a href="/filteredByDate">Filter by Date</a>
     <a href="/filteredByIdentifier">Filter by Identifier</a>
-    <a href="/filteredByProvider">Filter by Provider</a>
-
+    <a href="/filteredByProvider">Filter by Provider</a> {% endcomment %}
     <a href="/all/">All Products History</a>
-  </nav>
+    <a href="{% url 'logout' %}">Logout</a>
+    <a href="/logs">Logs</a>
+
+</nav>
 
   <h1>Last Checked Products</h1>
 
@@ -109,8 +112,8 @@
                 <th>Price</th>
                 <th>Insurance</th>
                 <th>Supplier</th>
-                <th>URL</th>
                 <th>DateTime</th>
+                <th>URL</th>
               </tr>
             </thead>
             <tbody>
@@ -123,8 +126,8 @@
                 <td>{{ product.price }}</td>
                 <td>{{ product.insurance }}</td>
                 <td>{{ product.supplier }}</td>
-                <td>{{ product.url }}</td>
                 <td>{{ product.dateTime }}</td>
+                <td>{{ product.url }}</td>
               </tr>
               {% endfor %}
             </tbody>

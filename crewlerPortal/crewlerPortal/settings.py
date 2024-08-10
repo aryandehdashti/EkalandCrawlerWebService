@@ -50,7 +50,7 @@ REST_FRAMEWORK = {
 }
 
 CRONJOBS = [
-    ('*/4 * * * *', 'crewlerApp.getProducts.fetch'),
+    ('0 1 * * *', 'crewlerApp.getProducts.fetch'),
 ]
 
 MIDDLEWARE = [
@@ -119,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
